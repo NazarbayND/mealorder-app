@@ -1,5 +1,3 @@
-from dataclasses import field, fields
-from email.policy import default
 from rest_framework import serializers
 from ordering.models import Collection, Product, Restaurant
 
@@ -9,7 +7,7 @@ class CollectionSerializer(serializers.ModelSerializer):
         model = Collection
         fields = ['id', 'title', 'products_count']
 
-    products_count = serializers.IntegerField(read_only=True, default=0)
+    products_count = serializers.IntegerField(read_only=True)
 
 
 class ProductSerializer(serializers.ModelSerializer):
