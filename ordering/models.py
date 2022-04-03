@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.conf import settings
 from uuid import uuid4
 # Create your models here.
 
@@ -7,12 +8,24 @@ from uuid import uuid4
 class Collection(models.Model):
     title = models.CharField(max_length=255)
 
+    def __str__(self) -> str:
+        return self.title
+
+    class Meta:
+        ordering = ['title']
+
 
 class Restaurant(models.Model):
     name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     description = models.TextField()
     image_url = models.CharField(max_length=255)
+
+    def __str__(self) -> str:
+        return self.name
+
+    class Meta:
+        ordering = ['name']
 
 
 class RestaurantCollections(models.Model):
@@ -31,13 +44,18 @@ class Product(models.Model):
         Collection, on_delete=models.PROTECT, related_name='products')
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
 
+    def __str__(self) -> str:
+        return self.title
+
+    class Meta:
+        ordering = ['title']
+
 
 class Customer(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    email = models.EmailField(unique=True)
     phone = models.CharField(max_length=255)
     birth_date = models.DateField(null=True)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 
 class Cart(models.Model):
